@@ -5,11 +5,11 @@ import org.springframework.util.Assert;
 
 @Getter
 public class Customer {
-    private CustumerId id;
+    private CustomerId id;
     private String name;
     private String email;
 
-    public Customer(CustumerId id, String name, String email) {
+    public Customer(CustomerId id, String name, String email) {
         Assert.notNull(name, "Name must not be null");
         Assert.notNull(email, "Email must not be null");
 
@@ -19,6 +19,6 @@ public class Customer {
     }
 
     public Customer(String name, String email) {
-        this(new CustumerId(), name, email);
+        this(new CustomerId(), name, email);
     }
 }

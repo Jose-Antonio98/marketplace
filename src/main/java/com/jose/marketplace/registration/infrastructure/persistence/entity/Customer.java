@@ -14,7 +14,6 @@ import java.util.UUID;
 @Data
 @RequiredArgsConstructor
 public class Customer {
-
     @Id
     private UUID id;
 
@@ -33,5 +32,13 @@ public class Customer {
     @Column(nullable = false, updatable = false)
     private Instant createdOn;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
 
+    @PrePersist
+    public void prePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

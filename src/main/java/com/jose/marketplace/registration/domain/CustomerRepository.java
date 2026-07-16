@@ -3,7 +3,8 @@ package com.jose.marketplace.registration.domain;
 import java.util.List;
 
 public interface CustomerRepository {
-    Customer save(Customer customer);
-    List<Customer> findAll();
 
+    Customer save(Customer customer);
+
+    List<Customer> findAll();
 }

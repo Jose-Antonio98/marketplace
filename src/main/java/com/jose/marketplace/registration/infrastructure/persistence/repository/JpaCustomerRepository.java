@@ -1,10 +1,9 @@
 package com.jose.marketplace.registration.infrastructure.persistence.repository;
 
-
-
 import com.jose.marketplace.registration.domain.Customer;
+import com.jose.marketplace.registration.domain.CustomerId;
 import com.jose.marketplace.registration.domain.CustomerRepository;
-import com.jose.marketplace.registration.domain.CustumerId;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,27 +12,14 @@ import java.util.stream.StreamSupport;
 
 @Repository
 public class JpaCustomerRepository implements CustomerRepository {
-    private CustomerEntityRepository customerEntityRepository;
+    private final CustomerEntityRepository customerEntityRepository;
+    private final ApplicationEventPublisher publisher;
 
-    public JpaCustomerRepository(CustomerEntityRepository customerEntityRepository) {
+
+    public JpaCustomerRepository(CustomerEntityRepository customerEntityRepository,
+                                 ApplicationEventPublisher publisher) {
         this.customerEntityRepository = customerEntityRepository;
-    }
-
-    @Override
-    public Customer save(Customer customer) {
-        var entity = mapper(customer);
-        customerEntityRepository.save(entity);
-
-        return customer;
-    }
-
-    @Override
-    public List<Customer> findAll() {
-        var iterable = customerEntityRepository.findAll();
-
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .map(JpaCustomerRepository::mapper)
-                .toList();
+        this.publisher = publisher;
     }
 
     private static com.jose.marketplace.registration.infrastructure.persistence.entity.Customer mapper(Customer customer) {
@@ -46,14 +32,30 @@ public class JpaCustomerRepository implements CustomerRepository {
         return entity;
     }
 
-
-
     private static Customer mapper(com.jose.marketplace.registration.infrastructure.persistence.entity.Customer entity) {
         String fullName = Optional.ofNullable(entity.getLastName())
                 .map(lastName -> entity.getFirstName() + " " + lastName)
                 .orElseGet(entity::getFirstName);
 
-        return new Customer(new CustumerId(entity.getId()), fullName, entity.getEmail());
+        return new Customer(new CustomerId(entity.getId()), fullName, entity.getEmail());
     }
 
+    @Override
+    public Customer save(Customer customer) {
+        var entity = mapper(customer);
+        customerEntityRepository.save(entity);
+
+        //publisher.publishEvent(new CustomerCreated(customer.getId().id().toString(), customer.getName()));
+
+        return customer;
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        var iterable = customerEntityRepository.findAll();
+
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .map(JpaCustomerRepository::mapper)
+                .toList();
+    }
 }
