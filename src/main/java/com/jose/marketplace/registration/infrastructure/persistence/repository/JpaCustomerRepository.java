@@ -1,5 +1,6 @@
 package com.jose.marketplace.registration.infrastructure.persistence.repository;
 
+import com.jose.marketplace.common.infrastructure.event.dto.CustomerCreated;
 import com.jose.marketplace.registration.domain.Customer;
 import com.jose.marketplace.registration.domain.CustomerId;
 import com.jose.marketplace.registration.domain.CustomerRepository;
@@ -45,7 +46,7 @@ public class JpaCustomerRepository implements CustomerRepository {
         var entity = mapper(customer);
         customerEntityRepository.save(entity);
 
-        //publisher.publishEvent(new CustomerCreated(customer.getId().id().toString(), customer.getName()));
+        publisher.publishEvent(new CustomerCreated(customer.getId().id().toString(), customer.getName()));
 
         return customer;
     }

@@ -1,5 +1,6 @@
 package com.jose.marketplace.registration.infrastructure.event;
 
+import com.jose.marketplace.common.infrastructure.event.dto.CustomerCreated;
 import com.jose.marketplace.registration.infrastructure.persistence.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class CustomerEventHandler {
     @HandleAfterCreate
     public void handleAfterCreate(Customer customer) {
         logger.warn("CustomerEventHandler#handleAfterCreate");
-        //publisher.publishEvent(new CustomerCreated(customer.getId().toString(), customer.getFirstName()));
+        publisher.publishEvent(new CustomerCreated(customer.getId().toString(), customer.getFirstName()));
     }
 
     @HandleAfterSave

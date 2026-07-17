@@ -1,4 +1,4 @@
-package com.jose.marketplace.registration.domain;
+package com.jose.marketplace.ticketing.domain;
 
 import org.springframework.util.Assert;
 
@@ -9,7 +9,7 @@ public record CustomerId(UUID id) {
         Assert.notNull(id, "id must not be null");
     }
 
-    public CustomerId() {
-        this(UUID.randomUUID());
+    public CustomerId(String id) {
+        this(UUID.fromString(id));
     }
 }

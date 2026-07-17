@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RepositoryRestResource(excerptProjection = CustomerExcerpt.class)
 public interface CustomerEntityRepository extends PagingAndSortingRepository<Customer, UUID>, CrudRepository<Customer, UUID> {
-
     List<Customer> findByFirstNameStartingWithIgnoreCase(@Param("firstName") String firstName);
 
     @Override

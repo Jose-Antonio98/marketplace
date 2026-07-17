@@ -1,6 +1,5 @@
 package com.jose.marketplace.catalog.domain;
 
-import com.jose.marketplace.catalog.infrastructure.persistence.entity.EventMetadata;
 import lombok.Getter;
 import lombok.Setter;
 
